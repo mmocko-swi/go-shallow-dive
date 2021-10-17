@@ -9,7 +9,7 @@ import (
 func TestProcess_WhenOriginalTextIsGiven_ThenItShouldBeIncludedInResults(t *testing.T) {
 	originalText := "a b  c   d	d"
 
-	sut := TextProcessor{}
+	sut := NewProcessor()
 	result := sut.Process(originalText)
 
 	assert.Equal(t, originalText, result.OriginalText)
@@ -18,7 +18,7 @@ func TestProcess_WhenOriginalTextIsGiven_ThenItShouldBeIncludedInResults(t *test
 func TestProcess_WhenTextIsGive_ThenCorrectResultIsReturned(t *testing.T) {
 	originalText := "a b  c   d	d"
 
-	processor := TextProcessor{}
+	processor := NewProcessor()
 	stats := processor.Process(originalText)
 
 	assert.True(t, len(stats.Stats) == 4, "Expected stats to have 4 elements")

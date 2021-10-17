@@ -6,7 +6,7 @@ type Processor interface {
 	Process(text string) TextStatistics
 }
 
-type TextProcessor struct {
+type textProcessor struct {
 }
 
 type TextStatistics struct {
@@ -14,11 +14,15 @@ type TextStatistics struct {
 	Stats        map[string]int
 }
 
-func (processor *TextProcessor) Process(text string) TextStatistics {
+func NewProcessor() *textProcessor {
+	txtProcessor := textProcessor{}
+	return &txtProcessor
+}
+
+func (processor *textProcessor) Process(text string) TextStatistics {
 	textStatistics := TextStatistics{text, make(map[string]int)}
 	for _, word := range strings.Fields(text) {
 		textStatistics.Stats[word]++
-		println(word)
 	}
 	return textStatistics
 }

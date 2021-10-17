@@ -16,12 +16,12 @@ func TestDownload_WhenValidUrlIsGiven_ThenDownloadIsPerformed(t *testing.T) {
 
 		sut := TextDownloader{}
 
-		result, err := sut.Download(address)
+		c := make(chan string)
 
-		if err != nil {
-			t.Errorf("Text was not downloaded for ")
-			continue
-		}
+		go sut.Download(address, c)
+
+		result := <-c
+
 		assert.True(t, result != "", "Text should be downloaded")
 	}
 }
