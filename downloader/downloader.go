@@ -9,10 +9,14 @@ type Downloader interface {
 	Download(address string, c chan string) error
 }
 
-type TextDownloader struct {
+type textDownloader struct {
 }
 
-func (downloader *TextDownloader) Download(address string, c chan string) error {
+func NewDownloader() Downloader {
+	return &textDownloader{}
+}
+
+func (downloader *textDownloader) Download(address string, c chan string) error {
 	response, err := http.Get(address)
 	if err != nil {
 		return err

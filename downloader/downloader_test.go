@@ -14,7 +14,7 @@ func TestDownload_WhenValidUrlIsGiven_ThenDownloadIsPerformed(t *testing.T) {
 
 	for _, address := range tests {
 
-		sut := TextDownloader{}
+		sut := NewDownloader()
 
 		c := make(chan string)
 

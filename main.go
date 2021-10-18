@@ -1,25 +1,43 @@
 package main
 
 import (
+	"fmt"
 	"solarwinds/pisigma/analyzer/downloader"
-	"solarwinds/pisigma/analyzer/textprocessor"
 )
 
 func main() {
-	address1 := "https://pastebin.com/raw/v0Sm2sfn"
-	address2 := "https://pastebin.com/raw/fysHJ7YX"
 
-	textDownloader := downloader.TextDownloader{}
-	channel1 := make(chan string)
-	channel2 := make(chan string)
-	go textDownloader.Download(address2, channel1)
-	go textDownloader.Download(address1, channel2)
+	add := []string{
+		"https://pastebin.com/raw/v0Sm2sfn",
+		"https://pastebin.com/raw/fysHJ7YX",
+	}
 
-	text1, text2 := <-channel1, <-channel2
+	// address1 := "https://pastebin.com/raw/v0Sm2sfn"
+	// address2 := "https://pastebin.com/raw/fysHJ7YX"
 
-	processor := textprocessor.NewProcessor()
-	processor.Process(text1)
-	processor.Process(text2)
+	results := downloader.MultiDownload(add)
+
+	for index, value := range *results {
+		fmt.Printf("%d : %d", index, len(value))
+	}
+
+	//textDownloader := downloader.NewDownloader()
+	//channel1 := make(chan string)
+	// channel2 := make(chan string)
+	// go textDownloader.Download(address2, channel1)
+	// go textDownloader.Download(address1, channel2)
+
+	// text1, text2 := <-channel1, <-channel2
+
+	// processor := textprocessor.NewProcessor()
+	// var stats1 = processor.Process(text1)
+	// var stats2 = processor.Process(text2)
+
+	// var results1 = analyzer.Analyze(stats1)
+	// var results2 = analyzer.Analyze(stats2)
+
+	// fmt.Println(results1)
+	// fmt.Println(results2)
 
 	// counts := make(map[string]int)
 	// input := bufio.NewScanner(os.Stdin)
