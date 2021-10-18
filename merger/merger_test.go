@@ -11,11 +11,11 @@ func TestWhenNilIsGiven_ThenMergeIsSafeForUse(t *testing.T) {
 	arg := []analyzer.ResultText{}
 
 	results := Merge(nil, &arg)
-	assert.Equal(t, 0, len(*results))
+	assert.Equal(t, 0, len(results))
 
 	results = Merge(&arg, nil)
 
-	assert.Equal(t, 0, len(*results))
+	assert.Equal(t, 0, len(results))
 }
 
 func TestWhenResultsAreGiven_ThenMergeIsPerformed(t *testing.T) {
@@ -32,5 +32,5 @@ func TestWhenResultsAreGiven_ThenMergeIsPerformed(t *testing.T) {
 
 	result := Merge(&rightResults, &leftResults)
 
-	assert.Equal(t, len(*result), 3)
+	assert.Equal(t, len(result), 3)
 }

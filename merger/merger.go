@@ -2,7 +2,7 @@ package merger
 
 import "solarwinds/pisigma/analyzer/analyzer"
 
-func Merge(leftResults *[]analyzer.ResultText, rightResults *[]analyzer.ResultText) *[]analyzer.ResultText {
+func Merge(leftResults *[]analyzer.ResultText, rightResults *[]analyzer.ResultText) []analyzer.ResultText {
 	finalMap := make(map[string]int)
 
 	if leftResults != nil {
@@ -21,5 +21,5 @@ func Merge(leftResults *[]analyzer.ResultText, rightResults *[]analyzer.ResultTe
 	for key, value := range finalMap {
 		finalResults = append(finalResults, analyzer.ResultText{Word: key, Count: value})
 	}
-	return &finalResults
+	return finalResults
 }
