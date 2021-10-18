@@ -23,7 +23,6 @@ func main() {
 	wg.Add(len(*results))
 
 	for index, value := range *results {
-
 		go func(url string, index int, value string, wg *sync.WaitGroup) {
 			defer wg.Done()
 			defer fmt.Printf("Processing: %s - DONE\n", url)
