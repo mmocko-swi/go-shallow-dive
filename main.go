@@ -2,7 +2,12 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"solarwinds/pisigma/analyzer/analyzer"
 	"solarwinds/pisigma/analyzer/downloader"
+	"solarwinds/pisigma/analyzer/reporter"
+	"solarwinds/pisigma/analyzer/textprocessor"
+	"sync"
 )
 
 func main() {
@@ -12,43 +17,29 @@ func main() {
 		"https://pastebin.com/raw/fysHJ7YX",
 	}
 
-	// address1 := "https://pastebin.com/raw/v0Sm2sfn"
-	// address2 := "https://pastebin.com/raw/fysHJ7YX"
-
 	results := downloader.MultiDownload(add)
 
+	wg := new(sync.WaitGroup)
+	wg.Add(len(*results))
+
 	for index, value := range *results {
-		fmt.Printf("%d : %d", index, len(value))
+
+		go func(url string, index int, value string, wg *sync.WaitGroup) {
+			defer wg.Done()
+			defer fmt.Printf("Processing: %s - DONE\n", url)
+
+			fmt.Printf("Processing: %s \n", url)
+			processedText := textprocessor.NewProcessor().Process(value)
+			analyzedText := analyzer.Analyze(processedText)
+
+			workignDir, _ := os.Getwd()
+			outputFile := fmt.Sprintf(workignDir+"\\out%d.json", index)
+
+			reporter.NewJsonReporter().Report(outputFile, analyzedText)
+		}(add[index], index, value, wg)
 	}
 
-	//textDownloader := downloader.NewDownloader()
-	//channel1 := make(chan string)
-	// channel2 := make(chan string)
-	// go textDownloader.Download(address2, channel1)
-	// go textDownloader.Download(address1, channel2)
-
-	// text1, text2 := <-channel1, <-channel2
-
-	// processor := textprocessor.NewProcessor()
-	// var stats1 = processor.Process(text1)
-	// var stats2 = processor.Process(text2)
-
-	// var results1 = analyzer.Analyze(stats1)
-	// var results2 = analyzer.Analyze(stats2)
-
-	// fmt.Println(results1)
-	// fmt.Println(results2)
-
-	// counts := make(map[string]int)
-	// input := bufio.NewScanner(os.Stdin)
-	// for input.Scan() {
-	// 	counts[input.Text()]++
-	// }
-
-	// for line, count := range counts {
-	// 	if count > 1 {
-	// 		fmt.Printf("%d\t%s\n", count, line)
-	// 	}
-	// }
-
+	fmt.Println("Waiting for analysis to finish")
+	wg.Wait()
+	fmt.Println("Analysis done")
 }

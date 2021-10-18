@@ -6,8 +6,8 @@ import (
 )
 
 type ResultText struct {
-	word    string
-	counter int
+	Word  string `json:"word"`
+	Count int    `json:"count"`
 }
 
 type keyValuePair struct {

@@ -10,8 +10,7 @@ type textProcessor struct {
 }
 
 type TextStatistics struct {
-	OriginalText string
-	Stats        map[string]int
+	Stats map[string]int
 }
 
 func NewProcessor() *textProcessor {
@@ -20,7 +19,7 @@ func NewProcessor() *textProcessor {
 }
 
 func (processor *textProcessor) Process(text string) TextStatistics {
-	textStatistics := TextStatistics{text, make(map[string]int)}
+	textStatistics := TextStatistics{make(map[string]int)}
 	for _, word := range strings.Fields(text) {
 		textStatistics.Stats[word]++
 	}
